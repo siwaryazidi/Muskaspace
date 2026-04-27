@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUSKA SPACE - Coworking Space Tunisia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <style>
+       
+
+a:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* GLASS EFFECT */
+.glass {
+    background: rgba(255,255,255,0.1) !important;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 15px;
+}
+
+/* NAVBAR */
+.custom-navbar {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    transition: 0.3s;
+}
+
+.custom-navbar.scrolled {
+    background: rgba(0,0,0,0.85);
+}
+
+/* GRADIENT TEXT */
+.gradient-text {
+    background: linear-gradient(90deg, #3b82f6, #f59e0b);
+    
+    -webkit-text-fill-color: transparent;
+}
+
+/* CARD HOVER */
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+/* GALLERY ZOOM */
+.gallery-img img {
+    transition: transform 0.4s ease;
+}
+.gallery-img:hover img {
+    transform: scale(1.1);
+}
+
+/* FLOATING BUTTON */
+.floating-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: var(--primary-color);
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    z-index: 9999;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.floating-btn:hover {
+    transform: scale(1.1);
+}
+
+/* LOADER */
+#loader {
+    position: fixed;
+    width:100%;
+    height:100%;
+    background:#000;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+}
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #f59e0b;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-color);
+            line-height: 1.6;
+            background: url("images/co2.jpeg") no-repeat center/center fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(38, 40, 50, 0.8) 0%, rgba(47, 54, 74, 0.8) 100%),
+                url("images/co1.jpeg") no-repeat center/cover;
+            color: rgb(242, 242, 244);
+            padding: 100px 20px;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            margin: 40px 0 30px;
+            font-weight: bold;
+            font-size: 2.5rem;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        .navbar-brand {
+            display: inline-flex;
+            align-items: center;
+            font-weight: bold;
+            color: white !important;
+            font-size: 1.5rem;
+        }
+
+        .navbar-brand img {
+            max-height: 80px;
+            margin-right: 0.75rem;
+            width: auto;
+        }
+        .custom-navbar {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+.custom-navbar.scrolled {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        /* Modern Contact Form Styles */
+        .contact-form .form-control:focus {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(15px);
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+        }
+
+        .contact-form .input-group-text {
+            transition: all 0.3s ease;
+        }
+
+        .contact-form .form-control {
+            transition: all 0.3s ease;
+        }
+
+        .contact-form .form-control::placeholder {
+            color: #6c757d !important;
+        }
+
+        .contact-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
+        }
+
+        .contact-form button:active {
+            transform: translateY(0);
+        }
+        .card-title {
+    font-weight: 700;
+    color: #1e40af;
+}
+
+.card ul li {
+    color: #374151;
+    font-weight: 500;
+}
+
+.card h4 {
+    font-weight: bold;
+    color: #16a34a;
+}
+#services .card {
+    background: #ffffff !important;
+}
+
+.whatsapp-btn {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    background: #25D366;
+    color: white;
+    border-radius: 50px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    z-index: 9999;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-btn i {
+    font-size: 22px;
+}
+
+/* Hover */
+.whatsapp-btn:hover {
+    background: #1ebe5d;
+    transform: translateY(-3px);
+}
+
+/* Pulse animation */
+.whatsapp-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    background: rgba(37, 211, 102, 0.4);
+    animation: pulse 2s infinite;
+    z-index: -1;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    70% { transform: scale(1.4); opacity: 0; }
+    100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* Mobile: hide text, keep icon */
+@media (max-width: 768px) {
+    .whatsapp-text {
+        display: none;
+    }
+
+    .whatsapp-btn {
+        width: 60px;
+        height: 60px;
+        justify-content: center;
+        border-radius: 50%;
+        padding: 0;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div id="loader">Loading...</div>
+    <!-- Navigation -->
+   <nav class="navbar navbar-expand-lg navbar-dark sticky-top custom-navbar">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home" style="color: white !important;">
+                <img src="images/logo.png" alt="MUSKA">
+               
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#booking">Booking</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.facebook.com/muskaspace/" target="_blank" title="Facebook" style="color: white;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://twitter.com" target="_blank" title="Twitter" style="color: white;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.instagram.com/muskaspace/" target="_blank" title="Instagram" style="color: white;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://linkedin.com" target="_blank" title="LinkedIn" style="color: white;">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4" data-aos="fade-up">Welcome to MUSKA SPACE</h1>
+            <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200">Your Premier Coworking Space in Tunisia, where your confort is our priority</p>
+            <a href="#booking" class="btn btn-primary btn-lg" data-aos="fade-up" data-aos-delay="400">Book Now</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5" style="background: rgba(255, 255, 255, 0.9);">
+        <div class="container">
+            <h2 class="section-title text-center" data-aos="fade-up">Why Choose Us?</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card h-100 text-center p-4 glass">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🏢</div>
+                        <h5 class="card-title">Modern Spaces</h5>
+                        <p class="card-text">Fully equipped office spaces with high-speed internet</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="300">
+                   <div class="card h-100 text-center p-4 glass">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
+                        <h5 class="card-title">Community</h5>
+                        <p class="card-text">Network with entrepreneurs and professionals</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="card h-100 text-center p-4" style="background: rgba(255, 255, 255, 0.95);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📅</div>
+                        <h5 class="card-title">Flexible Plans</h5>
+                        <p class="card-text">Choose the membership that fits your needs</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="card h-100 text-center p-4 glass">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔒</div>
+                        <h5 class="card-title">Secure Environment</h5>
+                        <p class="card-text">24/7 security and access control</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-5" style="background: linear-gradient(135deg, rgba(38, 40, 50, 0.95) 0%, rgba(47, 54, 74, 0.95) 100%), url('images/co2.jpeg') no-repeat center/cover;">
+        <div class="container">
+            <h2 class="section-title text-center" style="color: white;" data-aos="fade-up">Our Services</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="200">
+                   <div class="card h-100 border-primary glass"style="background: #ffffff;">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">For Students</h5>
+                            <h4 class="mb-3 text-success">Prices</h4>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Half journey : 5 TND</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Journey : 9 TND</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Monthly Pass : 125 TND</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Weekly Pass : 45 TND</li>
+                                 <li class="mb-2"><span class="badge bg-success me-2">✓</span>3 Months : 300 TND</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card h-100 border-primary glass" style="background: #ffffff;">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">For Professionals</h5>
+                            <h4 class="mb-3 text-success">Prices</h4>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Half journey : 10 TND</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Journey : 15 TND</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Monthly Pass : 180 TND</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Weekly Pass : 70 TND</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="card h-100 border-primary glass" style="background: #ffffff;">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Private Offices</h5>
+                            <h4 class="mb-3 text-success">Prices</h4>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>15 TND / Hour</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Monthly Rent : 450 TND</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Kitchen access</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Daily pass</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                   <div class="card h-100 border-primary glass" style="background: #ffffff;">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Meeting Rooms</h5>
+                            <h4 class="mb-3 text-success">Prices</h4>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span> 25 TND / Hour</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>40 TND / 2 Hours</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>+ 10 persons : 35 TND</li>
+                                <li class="mb-2"><span class="badge bg-success me-2">✓</span>Flexible hours</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-5" style="background: rgba(255, 255, 255, 0.9);">
+        <div class="container">
+            <h2 class="section-title text-center" data-aos="fade-up">Gallery</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="rounded overflow-hidden shadow-sm" style="height: 250px;">
+                        <img src="images/me2.jpeg" alt="Modern Office" class="w-100 h-100 object-fit-cover">
+                    </div>
+                    <div class="mt-3 text-center">
+                        <h5>Modern Office</h5>
+                        <p class="text-muted">State-of-the-art workspace</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="rounded overflow-hidden shadow-sm" style="height: 250px;">
+                        <img src="images/Re3.jpeg" alt="Meeting Room" class="w-100 h-100 object-fit-cover">
+                    </div>
+                    <div class="mt-3 text-center">
+                        <h5>Meeting Room</h5>
+                        <p class="text-muted">Professional meeting spaces</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="rounded overflow-hidden shadow-sm" style="height: 250px;">
+                        <img src="images/co4.jpeg" alt="Lounge Area" class="w-100 h-100 object-fit-cover">
+                    </div>
+                    <div class="mt-3 text-center">
+                        <h5>Lounge Area</h5>
+                        <p class="text-muted">Comfortable relaxation zone</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5 p-4 rounded" style="background: rgba(248, 250, 252, 0.9);" data-aos="fade-up" data-aos-delay="500">
+               <a href="gallery.html" class="btn btn-primary btn-lg">Show More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+<section id="booking" class="py-5" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%), url('images/Re1.jpeg') no-repeat center/cover;">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <!-- LEFT TEXT -->
+            <div class="col-lg-6 text-white mb-5 mb-lg-0" data-aos="fade-right">
+                <h2 class="fw-bold mb-4">Book Your Space</h2>
+                <p class="lead">
+                    Reserve your spot at MUSKA SPACE بسهولة وسرعة 🚀  
+                    اختر الخدمة المناسبة لك وابدأ الإنتاجية في أفضل بيئة عمل.
+                </p>
+
+                <ul class="list-unstyled mt-4">
+                    <li>✔ Fast booking process</li>
+                    <li>✔ Flexible plans</li>
+                    <li>✔ Instant confirmation</li>
+                </ul>
+            </div>
+
+            <!-- RIGHT FORM -->
+            <div class="col-lg-5 ms-auto" data-aos="fade-left">
+
+                <form class="p-4 rounded shadow-lg glass"  style="background: rgba(0,0,0,0.85); color:white; max-width: 420px; margin-left:auto;">
+                     
+
+                    <h5 class="mb-3 text-center">Quick Booking</h5>
+
+                    <input type="text" class="form-control mb-3" id="name" placeholder="Full Name" required>
+
+                    <input type="email" class="form-control mb-3" id="email" placeholder="Email" required>
+
+                    <input type="tel" class="form-control mb-3" id="phone" placeholder="Phone" required>
+
+                    <select class="form-select mb-3" id="service">
+                        <option>For Students</option>
+                        <option>For Professionals</option>
+                        <option>Private Offices</option>
+                        <option>Meeting Rooms</option>
+                    </select>
+
+                    <input type="date" class="form-control mb-3" id="date" required>
+
+                    <textarea class="form-control mb-3" id="message" rows="3" placeholder="Message"></textarea>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        Book Now
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5" style="background: rgba(255, 255, 255, 0.9);">
+        <div class="container">
+            <h2 class="section-title text-center" data-aos="fade-up">Contact Us</h2>
+            <div class="row">
+                <div class="col-lg-6 mb-5" data-aos="fade-right">
+                    <h4>Get in Touch</h4>
+                   <p>
+  <strong>Email:</strong> 
+  <a href="mailto:musca.success@gmail.com" class="text-decoration-none text-dark">
+    musca.success@gmail.com
+  </a>
+</p>
+
+<p>
+  <strong>Phone:</strong> 
+  <a href="tel:+21699666672" class="text-decoration-none text-dark">
+    +216 99 666 672
+  </a>
+</p>
+                    <p><strong>Address:</strong>27 Rue Avicene, 2000, Tunisie</p>
+                    <p><strong>Hours:</strong> Mon-Sun 8:30AM-00:00AM</p>
+                    
+                    <div class="mt-4" data-aos="zoom-in" data-aos-delay="300">
+                        <h5>Our Location</h5>
+                        <div class="ratio ratio-16x9" style="max-width: 100%; height: 300px;">
+                            <iframe 
+                               src="https://maps.google.com/maps?q=27+Rue+Avicene,+2000,+Tunisie,+Le Bardo&output=embed" 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0; border-radius: 0.375rem;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="WorkSpace TN Location - Tunis, Tunisia">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <form class="contact-form" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 2.5rem; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.1);" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="mb-4">
+                            <label for="contactName" class="form-label fw-semibold mb-2" style="font-size: 0.9rem; letter-spacing: 0.5px;">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.1);"><i class="fas fa-user text-primary"></i></span>
+                                <input type="text" class="form-control" id="contactName" autocomplete="name" required style="border-left: none; border-radius: 0 0.375rem 0.375rem 0;" placeholder="Enter your full name">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="contactEmail" class="form-label fw-semibold mb-2" style="font-size: 0.9rem; letter-spacing: 0.5px;">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.1);"><i class="fas fa-envelope text-primary"></i></span>
+                                <input type="email" class="form-control" id="contactEmail" autocomplete="email" required style="border-left: none; border-radius: 0 0.375rem 0.375rem 0;" placeholder="Enter your email">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="contactPhone" class="form-label fw-semibold mb-2" style="font-size: 0.9rem; letter-spacing: 0.5px;">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.1);"><i class="fas fa-phone text-primary"></i></span>
+                                <input type="tel" class="form-control" id="contactPhone" autocomplete="tel" style="border-left: none; border-radius: 0 0.375rem 0.375rem 0;" placeholder="Enter your phone number">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="contactSubject" class="form-label fw-semibold mb-2" style="font-size: 0.9rem; letter-spacing: 0.5px;">Subject</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.1);"><i class="fas fa-tag text-primary"></i></span>
+                                <input type="text" class="form-control" id="contactSubject" autocomplete="off" required style="border-left: none; border-radius: 0 0.375rem 0.375rem 0;" placeholder="What's this about?">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="contactMessage" class="form-label fw-semibold mb-2" style="font-size: 0.9rem; letter-spacing: 0.5px;">Message</label>
+                            <textarea class="form-control" id="contactMessage" autocomplete="off" rows="4" required style="border-radius: 0.375rem; resize: vertical;" placeholder="Tell us how we can help you..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-lg w-100 fw-semibold" style="background: linear-gradient(135deg, var(--primary-color), #3b82f6); border: none; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); transition: all 0.3s ease; font-size: 1rem; letter-spacing: 0.5px;">
+                            <i class="fas fa-paper-plane me-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>MUSKA SPACE</h5>
+                    <p>Premium coworking space in Tunisia</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#home" class="text-white text-decoration-none">Home</a></li>
+                        <li><a href="#services" class="text-white text-decoration-none">Services</a></li>
+                        <li><a href="#booking" class="text-white text-decoration-none">Booking</a></li>
+                        <li><a href="#contact" class="text-white text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contact</h5>
+                   <p class="mb-1">
+  Email: 
+  <a href="mailto:musca.success@gmail.com" class="text-white text-decoration-none">
+    musca.success@gmail.com
+  </a>
+</p>
+
+<p class="mb-1">
+  Phone: 
+  <a href="tel:+21699666672" class="text-white text-decoration-none">
+    +216 99 666 672
+  </a>
+</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center border-top pt-3">
+                    <p class="mb-0">&copy; 2026 MUSKA. All rights reserved. Powered By Siwar</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+
+        // NAVBAR SCROLL EFFECT
+window.addEventListener("scroll", function() {
+    const nav = document.querySelector(".custom-navbar");
+    nav.classList.toggle("scrolled", window.scrollY > 50);
+});
+
+// LOADER
+window.onload = () => {
+    document.getElementById("loader").style.display = "none";
+};
+        
+        window.addEventListener("scroll", function() {
+    const nav = document.querySelector(".custom-navbar");
+    nav.classList.toggle("scrolled", window.scrollY > 50);
+});
+
+        // Wait for page to load completely
+        window.addEventListener('load', function() {
+            console.log('=== PAGE LOADED ===');
+            
+            // Initialize AOS
+            try {
+                AOS.init({
+                    duration: 800,
+                    easing: 'ease-in-out',
+                    once: true,
+                    mirror: false
+                });
+                console.log('✓ AOS initialized');
+            } catch(e) {
+                console.error('AOS error:', e);
+            }
+
+            // Initialize EmailJS
+            if (typeof emailjs !== 'undefined') {
+                try {
+                    emailjs.init("K79OUIq3d9HbTv4qP");
+                    console.log('✓ EmailJS initialized');
+                } catch(e) {
+                    console.error('EmailJS init error:', e);
+                }
+            } else {
+                console.warn('⚠️ EmailJS library not loaded yet. Will retry...');
+                setTimeout(function() {
+                    if (typeof emailjs !== 'undefined') {
+                        emailjs.init("K79OUIq3d9HbTv4qP");
+                        console.log('✓ EmailJS initialized (on retry)');
+                    } else {
+                        console.error('❌ EmailJS library failed to load from CDN');
+                    }
+                }, 2000);
+            }
+
+            // Get all forms
+            const allForms = document.querySelectorAll('form');
+            console.log('Found ' + allForms.length + ' form(s)');
+            
+            allForms.forEach((form, index) => {
+                console.log('Form ' + index + ':', form.className);
+                
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Form submitted:', form.className);
+                    
+                    // Get form type
+                    const isContactForm = form.classList.contains('contact-form');
+                    console.log('Is contact form:', isContactForm);
+
+                    let templateData = {};
+
+                    if (isContactForm) {
+                        // Contact form
+                        const name = document.getElementById('contactName')?.value || '';
+                        const email = document.getElementById('contactEmail')?.value || '';
+                        const phone = document.getElementById('contactPhone')?.value || '';
+                        const subject = document.getElementById('contactSubject')?.value || '';
+                        const message = document.getElementById('contactMessage')?.value || '';
+
+                        if (!name || !email || !subject || !message) {
+                            alert('Please fill all required fields');
+                            return;
+                        }
+
+                        templateData = {
+                            from_name: name,
+                            from_email: email,
+                            phone: phone,
+                            subject: subject,
+                            message: message
+                        };
+                        console.log('Contact form data:', templateData);
+                    } else {
+                        // Booking form
+                        const name = document.getElementById('name')?.value || '';
+                        const email = document.getElementById('email')?.value || '';
+                        const phone = document.getElementById('phone')?.value || '';
+                        const service = document.getElementById('service')?.value || '';
+                        const date = document.getElementById('date')?.value || '';
+                        const message = document.getElementById('message')?.value || '';
+
+                        if (!name || !email || !service || !date) {
+                            alert('Please fill all required fields');
+                            return;
+                        }
+
+                        templateData = {
+                            from_name: name,
+                            from_email: email,
+                            phone: phone,
+                            service: service,
+                            date: date,
+                            message: message
+                        };
+                        console.log('Booking form data:', templateData);
+                    }
+
+                    // Send email
+                    console.log('Sending email...');
+                    if (typeof emailjs === 'undefined') {
+                        alert('Error: Email service not available. Please try again.');
+                        console.error('emailjs is not defined');
+                        return;
+                    }
+                    emailjs.send('service_n1cfxnq', 'template_cx3mrpg', templateData)
+                        .then(function(response) {
+                            console.log('SUCCESS!', response);
+                           showPopup(
+                             isContactForm 
+                             ? "Message sent successfully!" 
+                             : "Booking request sent!"
+);
+                            form.reset();
+                        })
+                        .catch(function(error) {
+                            console.log('FAILED!', error);
+                           showPopup("Something went wrong ❌");
+                        });
+                });
+            });
+        });
+        function showPopup(message) {
+    const popup = document.getElementById("successPopup");
+
+    popup.innerText = "✅ " + message;
+    popup.style.display = "block";
+
+    setTimeout(() => {
+        popup.style.display = "none";
+    }, 3000);
+}
+    </script>
+    <a href="#booking" class="floating-btn">
+    <i class="fas fa-calendar-check"></i>
+</a>
+<!-- WhatsApp Button -->
+<a href="https://wa.me/21699666672?text=Hello%20MUSKA%20SPACE%2C%20I%20want%20to%20book"
+   class="whatsapp-btn"
+   target="_blank">
+
+    <i class="fab fa-whatsapp"></i>
+    <span class="whatsapp-text">Chat with us</span>
+
+</a>
+</body>
+<!-- ✅ SUCCESS POPUP -->
+<div id="successPopup" style="
+position: fixed;
+top: 20px;
+right: 20px;
+background: #22c55e;
+color: white;
+padding: 15px 20px;
+border-radius: 10px;
+box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+display: none;
+z-index: 9999;
+font-weight: 500;
+">
+    ✅ Message sent successfully!
+</div>
+</html>
+</html>
+

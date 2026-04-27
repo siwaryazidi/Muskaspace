@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body {
+    background: linear-gradient(135deg, #1f2937, #111827);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* LOGIN */
+#loginBox {
+    max-width: 400px;
+    margin: 100px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+/* PANEL */
+#adminPanel {
+    background: #f9fafb;
+    min-height: 100vh;
+}
+
+/* CARDS */
+.card {
+    border-radius: 15px;
+    transition: 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* IMAGES */
+#posts img, #topPosts img {
+    height: 200px;
+    object-fit: cover;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox" class="text-center">
+  <h2>🔐 Admin Login</h2>
+  <input id="email" class="form-control mb-2" placeholder="Email">
+  <div class="input-group">
+    <input type="password" id="password" class="form-control" placeholder="Password">
+    
+    <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword()">
+        <i class="fas fa-eye" id="toggleIcon"></i>
+    </span>
+</div>
+  <button onclick="login()" class="btn btn-primary w-100 mb-2">Login</button>
+  <button onclick="resetPassword()" class="btn btn-link">Forgot Password?</button>
+</div>
+
+<!-- ADMIN -->
+<div id="adminPanel" style="display:none;">
+
+<nav class="navbar navbar-dark bg-dark">
+<div class="container d-flex justify-content-between">
+<span class="navbar-brand">🚀 MUSKA ADMIN</span>
+<button onclick="logout()" class="btn btn-outline-light btn-sm">Logout</button>
+</div>
+</nav>
+
+<div class="container my-4">
+
+<h2>📊 Analytics Dashboard</h2>
+
+<div class="row g-3 text-center">
+
+<div class="col-md-3">
+<div class="card p-3"><h6>Total Posts</h6><h2 id="totalPosts">0</h2></div>
+</div>
+
+<div class="col-md-3">
+<div class="card p-3"><h6>This Month</h6><h2 id="monthlyPosts">0</h2></div>
+</div>
+
+<div class="col-md-3">
+<div class="card p-3"><h6>Total Clicks</h6><h2 id="totalClicks">0</h2></div>
+</div>
+
+<div class="col-md-3">
+<div class="card p-3"><h6>Top Post</h6><h5 id="topPost">-</h5></div>
+</div>
+
+</div>
+
+<div class="mt-4">
+<canvas id="postsChart"></canvas>
+</div>
+
+<!-- TOP POSTS -->
+<div class="mt-5">
+<h4>🔥 Top Posts</h4>
+<div id="topPosts" class="row"></div>
+</div>
+
+</div>
+
+<!-- FORM -->
+<div class="container py-4">
+
+<div class="card p-4 mb-4">
+<h4>Create / Edit Post</h4>
+
+<input id="title" class="form-control mb-2" placeholder="Title">
+<input type="file" id="image" class="form-control mb-3" required>
+<input type="file" id="image" onchange="previewImage()" class="form-control">
+<input id="image" class="form-control mb-2" placeholder="Image URL" oninput="previewImage()">
+<textarea id="description" class="form-control mb-2" placeholder="Description"></textarea>
+<input id="link" class="form-control mb-2" placeholder="Social Link">
+
+<img id="preview" class="d-none w-100 mb-2">
+
+<button id="saveBtn" onclick="savePost()" class="btn btn-primary w-100">Save Post</button>
+</div>
+
+<h4>All Posts</h4>
+<div id="posts" class="row"></div>
+
+</div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+// CONFIG
+const firebaseConfig = {
+ apiKey: "AIzaSyC6S4B-5iN78Z46tTGbQnf14e8jE1b_ZM4",
+ authDomain: "coworking-307e8.firebaseapp.com",
+ projectId: "coworking-307e8",
+};
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+let editId = null;
+let chartInstance = null;
+
+// AUTH
+auth.onAuthStateChanged(user => {
+  loginBox.style.display = user ? "none" : "block";
+  adminPanel.style.display = user ? "block" : "none";
+});
+
+function login(){
+  auth.signInWithEmailAndPassword(email.value,password.value)
+  .catch(e=>alert(e.message));
+}
+
+function logout(){ auth.signOut(); }
+
+function resetPassword(){
+  auth.sendPasswordResetEmail(email.value)
+  .then(()=>alert("Check your email"));
+}
+
+// ANALYTICS
+db.collection("posts").onSnapshot(snapshot => {
+
+  let total=0, monthly=0, clicks=0;
+  let topPost="-", maxClicks=0;
+  let months={}, posts=[];
+
+  const now=new Date();
+
+  snapshot.forEach(doc=>{
+    const p=doc.data();
+    total++;
+
+    const c=p.clicks||0;
+    clicks+=c;
+
+    if(c>maxClicks){ maxClicks=c; topPost=p.title; }
+
+    if(p.created){
+      const d=p.created.toDate();
+
+      if(d.getMonth()==now.getMonth() && d.getFullYear()==now.getFullYear()){
+        monthly++;
+      }
+
+      const key=(d.getMonth()+1)+"/"+d.getFullYear();
+      months[key]=(months[key]||0)+1;
+    }
+
+    posts.push({...p,id:doc.id});
+  });
+
+  totalPosts.innerText=total;
+  monthlyPosts.innerText=monthly;
+  totalClicks.innerText=clicks;
+  topPost.innerText=topPost;
+
+  renderChart(months);
+  renderTopPosts(posts);
+
+});
+
+// CHART
+function renderChart(data){
+
+  const ctx=document.getElementById("postsChart").getContext("2d");
+
+  if(chartInstance) chartInstance.destroy();
+
+  chartInstance=new Chart(ctx,{
+    type:"line",
+    data:{
+      labels:Object.keys(data),
+      datasets:[{
+        data:Object.values(data),
+        label:"Posts Growth",
+        fill:true,
+        tension:0.4
+      }]
+    }
+  });
+}
+
+// TOP POSTS
+function renderTopPosts(posts){
+
+  posts.sort((a,b)=>(b.clicks||0)-(a.clicks||0));
+
+  topPosts.innerHTML="";
+
+  posts.slice(0,3).forEach(p=>{
+    topPosts.innerHTML+=`
+    <div class="col-md-4">
+      <div class="card p-2">
+
+        <img src="${p.image || 'images/default.jpg'}" class="card-img-top">
+
+        <h6>${p.title}</h6>
+
+        <p>${p.description || ""}</p>
+
+        <p>🔥 ${p.clicks||0} clicks</p>
+
+        <a href="${p.link}" target="_blank" class="btn btn-primary btn-sm mt-2">
+          🔗 View Post
+        </a>
+
+      </div>
+    </div>`;
+  });
+
+}
+
+// SAVE
+function savePost(){
+
+  const btn=document.getElementById("saveBtn");
+  btn.innerText="Saving...";
+
+  const file = document.getElementById("image").files[0];
+
+  if(!title.value || !file){
+    alert("Fill fields");
+    btn.innerText="Save Post";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(){
+
+    const data={
+      title: title.value,
+      image: reader.result, // ✅ FIXED
+      description: description.value,
+      link: link.value
+    };
+
+    if(editId){
+      db.collection("posts").doc(editId).update(data)
+      .then(()=>{
+        editId=null;
+        clearForm();
+        btn.innerText="Save Post";
+      });
+
+    } else {
+
+      data.created=new Date();
+      data.clicks=0;
+
+      db.collection("posts").add(data)
+      .then(()=>{
+        clearForm();
+        btn.innerText="Save Post";
+      });
+    }
+
+  };
+
+  reader.readAsDataURL(file); // ✅ IMPORTANT
+}
+// DELETE
+function deletePost(id){
+  if(confirm("Delete?")){
+    db.collection("posts").doc(id).delete();
+  }
+}
+
+// EDIT
+function editPost(id,post){
+  title.value=post.title;
+  preview.src = post.image;
+preview.classList.remove("d-none");
+  description.value=post.description||"";
+  link.value=post.link||"";
+  previewImage();
+  editId=id;
+}
+
+// PREVIEW
+function previewImage(){
+
+  const file = document.getElementById("image").files[0];
+
+  if(file){
+    const reader = new FileReader();
+
+    reader.onload = function(){
+      preview.src = reader.result;
+      preview.classList.remove("d-none");
+    };
+
+    reader.readAsDataURL(file);
+  }
+}
+
+// CLEAR
+function clearForm(){
+  title.value=image.value=description.value=link.value="";
+  preview.classList.add("d-none");
+}
+
+// LOAD POSTS
+db.collection("posts").orderBy("created","desc")
+.onSnapshot(s=>{
+
+  posts.innerHTML="";
+
+  s.forEach(doc=>{
+    const p=doc.data();
+
+    posts.innerHTML+=`
+    <div class="col-md-4 mb-3">
+      <div class="card p-2">
+        <img src="${p.image}">
+        <h6>${p.title}</h6>
+
+        ${p.link?`<a href="${p.link}" target="_blank" class="btn btn-sm btn-info">View</a>`:""}
+
+        <button onclick='editPost("${doc.id}", ${JSON.stringify(p)})' class="btn btn-warning btn-sm">Edit</button>
+        <button onclick='deletePost("${doc.id}")' class="btn btn-danger btn-sm">Delete</button>
+      </div>
+    </div>`;
+  });
+
+});
+function togglePassword() {
+    const password = document.getElementById("password");
+    const icon = document.getElementById("toggleIcon");
+
+    if (password.type === "password") {
+        password.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        password.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+
+</script>
+</body>
+</html>
